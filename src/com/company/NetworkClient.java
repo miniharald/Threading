@@ -9,7 +9,7 @@ public class NetworkClient implements Runnable {
     private final String SERVER_IP = "10.33.14.140";
     private final int MSG_SIZE = 512;
     private final int SLEEP_MS = 100;
-    ServerInput input = new ServerInput(this);
+    ServerInput input;
     private DatagramSocket socket;
     private InetAddress serverAddress;
 
@@ -18,6 +18,7 @@ public class NetworkClient implements Runnable {
             serverAddress = InetAddress.getByName(SERVER_IP);
             socket.setSoTimeout(SLEEP_MS);
             socket = new DatagramSocket(NetworkServer.PORT);
+            input = new ServerInput(this);
             run();
         } catch(Exception e){ System.out.println("I konstruktorn: " + e.getMessage()); }
     }
