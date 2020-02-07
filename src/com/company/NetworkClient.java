@@ -9,7 +9,7 @@ public class NetworkClient implements Runnable {
     private final String SERVER_IP = "localhost";
     private final int MSG_SIZE = 512;
     private final int SLEEP_MS = 100;
-    ServerInput input = new ServerInput(this);
+    ServerInput input;
     private DatagramSocket socket;
     private InetAddress serverAddress;
 
@@ -18,14 +18,16 @@ public class NetworkClient implements Runnable {
             serverAddress = InetAddress.getByName(SERVER_IP);
             socket = new DatagramSocket(0);
             socket.setSoTimeout(SLEEP_MS);
-            run();
+            input = new ServerInput(this);
         } catch(Exception e){ System.out.println(e.getMessage()); }
     }
 
     public void sendMsgToServer(String msg) {
         byte[] buffer = msg.getBytes();
-        DatagramPacket request = new DatagramPacket(buffer, buffer.length, this.serverAddress, new NetworkServer().PORT);
-        try { socket.send(request); } catch (Exception e) {}
+        DatagramPacket request = new DatagramPacket(buffer, buffer.length, this.serverAddress, NetworkServer.PORT);
+        try { socket.send(request); } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     private void receiveMessageFromServer() {

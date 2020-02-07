@@ -18,6 +18,7 @@ public class NetworkServer implements Runnable {
         try {
             socket = new DatagramSocket(PORT);
             socket.setSoTimeout(SLEEP_MS);
+            run();
         } catch(SocketException e){ System.out.println(e.getMessage()); }
     }
 
@@ -39,9 +40,8 @@ public class NetworkServer implements Runnable {
             if (!receiveMsgFromAnyClient(clientRequest)) {
                 continue;
             }
-            List<String> queuedMessages = new ArrayList<>();
+            //List<String> queuedMessages = new ArrayList<>();
             String clientMsg = new String(clientRequest.getData(), 0, clientRequest.getLength());
-            queuedMessages.add(clientMsg);
 
             // TODO: Save the msg to a queue instead
         }
@@ -49,7 +49,8 @@ public class NetworkServer implements Runnable {
 
     private boolean receiveMsgFromAnyClient(DatagramPacket clientRequest){
         try { socket.receive(clientRequest);
-            System.out.println("I server" + clientRequest);
+            System.out.println("Alex connected!");
+            System.out.println(clientRequest);
         }
         catch (Exception ex) { return false; }
         return true;
