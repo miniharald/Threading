@@ -6,27 +6,27 @@ import java.net.InetAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NetworkClient implements Runnable {
-    private final String SERVER_IP = "localhost";
+    private final String SERVER_IP = "10.33.14.140";
     private final int MSG_SIZE = 512;
     private final int SLEEP_MS = 100;
-    ServerInput input;
+    ServerInput input = new ServerInput(this);
     private DatagramSocket socket;
     private InetAddress serverAddress;
 
     public NetworkClient(){
         try {
             serverAddress = InetAddress.getByName(SERVER_IP);
-            socket = new DatagramSocket(0);
             socket.setSoTimeout(SLEEP_MS);
-            input = new ServerInput(this);
-        } catch(Exception e){ System.out.println(e.getMessage()); }
+            socket = new DatagramSocket(NetworkServer.PORT);
+            run();
+        } catch(Exception e){ System.out.println("I konstruktorn: " + e.getMessage()); }
     }
 
     public void sendMsgToServer(String msg) {
         byte[] buffer = msg.getBytes();
-        DatagramPacket request = new DatagramPacket(buffer, buffer.length, this.serverAddress, NetworkServer.PORT);
+        DatagramPacket request = new DatagramPacket(buffer, buffer.length, this.serverAddress, new NetworkServer().PORT);
         try { socket.send(request); } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("sendMsgToServer: " +  e.getMessage());
         }
     }
 
