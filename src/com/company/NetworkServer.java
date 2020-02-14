@@ -18,7 +18,6 @@ public class NetworkServer implements Runnable {
         try {
             socket = new DatagramSocket(PORT);
             socket.setSoTimeout(SLEEP_MS);
-            run();
         } catch(SocketException e){ System.out.println(e.getMessage()); }
     }
 
@@ -40,6 +39,9 @@ public class NetworkServer implements Runnable {
 
             if (!receiveMsgFromAnyClient(clientRequest)) {
                 continue;
+            }
+            else{
+                System.out.println("New message recieved! " + clientRequest);
             }
             //List<String> queuedMessages = new ArrayList<>();
             String clientMsg = new String(clientRequest.getData(), 0, clientRequest.getLength());
