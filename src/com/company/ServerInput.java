@@ -15,9 +15,24 @@ public class ServerInput {
     }
 
     public void inputMsg() {
-        System.out.println("Enter message: ");
-        Scanner scan = new Scanner(System.in);
-        msg = scan.nextLine();
-        client.sendMsgToServer(msg);
+        boolean isLooping = true;
+        while (isLooping) {
+            System.out.println("Enter message: ");
+            Scanner scan = new Scanner(System.in);
+            if (scan.hasNextLine()) {
+                msg = scan.nextLine();
+            }
+            else {
+                isLooping = false;
+            }
+            if (msg.equals("STOPP")) {
+                client.setIsRunning(false);
+                isLooping = false;
+            } else {
+                client.sendMsgToServer(msg);
+            }
+            System.out.println("Meddelandet var: " + msg +"!");
+            System.out.println(msg.length());
+        }
     }
 }

@@ -22,6 +22,7 @@ public class NetworkServer implements Runnable {
     }
 
 
+
     public void sendMsgToClient(String msg, SocketAddress clientSocketAddress) {
         byte[] buffer = msg.getBytes();
 
